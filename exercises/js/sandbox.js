@@ -7,4 +7,4 @@ $('#myList>li.current').removeClass('current')
 $('#specials').find('.input_submit');
 $('#slideshow>li').eq(0)
   .addClass('current')
-  .siblings()
+  .siblings();
