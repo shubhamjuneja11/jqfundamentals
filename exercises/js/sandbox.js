@@ -6,5 +6,6 @@ $('#myList > li.current').removeClass('current')
                          .addClass('current');
 $('#specials select').closest('ul')
                      .find('.input_submit:first');
-$('#slideshow > li').addClass('current')
-                    .siblings();
+$('#slideshow > li:first').addClass('current')
+                          .siblings()
+                          .addClass('disabled');
