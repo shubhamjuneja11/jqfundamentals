@@ -28,19 +28,21 @@ TabNavigator.prototype.createTabs = function(modules) {
 TabNavigator.prototype.setModuleClickHandler = function(modules, modulesList) {
   var _this = this;
   modulesList.on('click', function(event) {
-  var target = event.target;
-  var targetId = $(target).attr('data-id');
-  $(target).addClass('current');
-  modules.siblings('#' + targetId).show();
+    var target = event.target;
+    var targetId = $(target).attr('data-id');
+    $(target).addClass('current');
+    modules.siblings('#' + targetId).show();
 
-  // Removing previous selected tab
-  _this.selectedModule.removeClass('current');
-  modules.siblings('#' + _this.selectedModuleId).hide();
+    // Removing previous selected tab
+    _this.selectedModule.removeClass('current');
+    modules.siblings('#' + _this.selectedModuleId).hide();
 
-  // Setting current selected tab
-  _this.selectedModule = $(target);
-  _this.selectedModuleId = targetId;
-});
+    // Setting current selected tab
+    _this.selectedModule = $(target);
+    _this.selectedModuleId = targetId;
+  });
 }
-var tabNavigator = new TabNavigator('div.module');
-tabNavigator.init();
+$(function() {
+  var tabNavigator = new TabNavigator('div.module');
+  tabNavigator.init();
+});
