@@ -22,6 +22,7 @@ BlogToggler.prototype.setToggler = function() {
     _this.selectedList = selectedList;
   });
 };
-
-var blogToggler = new BlogToggler('#blog');
-blogToggler.init();
+$(function() {
+  var blogToggler = new BlogToggler('#blog');
+  blogToggler.init();
+});
