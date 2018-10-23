@@ -27,7 +27,9 @@ HintProvider.prototype.setTextFocusListener = function() {
   });
 };
 
-var searchField = $('.hint');
-var searchLabel = $('#search label[for="q"]');
-var hintProvider = new HintProvider(searchField, searchLabel);
-hintProvider.init();
+$(function() {
+  var searchField = $('.hint');
+  var searchLabel = $('#search label[for="q"]');
+  var hintProvider = new HintProvider(searchField, searchLabel);
+  hintProvider.init();
+});
