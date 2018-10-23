@@ -17,7 +17,9 @@ HintProvider.prototype.setTextFocusListener = function() {
   this.searchField.on({
     focus: function() {
       $(this).val('').removeClass('hint');
-    },
+    }
+  });
+  this.searchField.on({
     blur: function() {
       $this = $(this);
       if ($this.val() === ('')) {
@@ -28,7 +30,7 @@ HintProvider.prototype.setTextFocusListener = function() {
 };
 
 $(function() {
-  var searchField = $('.hint');
+  var searchField = $('[data-property="hint"]');
   var searchLabel = $('#search label[for="q"]');
   var hintProvider = new HintProvider(searchField, searchLabel);
   hintProvider.init();
