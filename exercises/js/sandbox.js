@@ -1,5 +1,5 @@
 $('img[alt]').each(function(index, element) { console.log(element['alt']); });
-$('.input_text').parents('form')
+$('.input_text').closest('form')
                 .addClass('myform');
 $('#myList > li.current').removeClass('current')
                          .next('li')
