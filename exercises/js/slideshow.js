@@ -1,16 +1,16 @@
-function CarouselMaker(slidesContainer, slidesContent) {
+function SlideShow(slidesContainer, slidesContent) {
   this.slidesContainer = slidesContainer;
   this.slidesContent = slidesContent;
 };
 
-CarouselMaker.prototype.init = function() {
+SlideShow.prototype.init = function() {
   this.slidesContent = this.slidesContainer.find(this.slidesContent);
   this.slidesCount = this.slidesContent.length;
   this.createSlider();
   this.startSlideShow();
 };
 
-CarouselMaker.prototype.createSlider = function() {
+SlideShow.prototype.createSlider = function() {
   var images = this.slidesContainer.find(this.slidesContent);
   this.slider = $('<div id=slider>');
   this.appendClonedData(images);
@@ -19,12 +19,12 @@ CarouselMaker.prototype.createSlider = function() {
   $('body').prepend(this.slider);
 };
 
-CarouselMaker.prototype.createImageCounter = function() {
+SlideShow.prototype.createImageCounter = function() {
   this.imageCounter = $('<div>');
   this.slider.append(this.imageCounter);
 };
 
-CarouselMaker.prototype.appendClonedData = function(data) {
+SlideShow.prototype.appendClonedData = function(data) {
   var _this = this;
   data.each(function(index, oldData) {
     var clonedData = $(oldData).clone();
@@ -33,22 +33,22 @@ CarouselMaker.prototype.appendClonedData = function(data) {
   });
 };
 
-CarouselMaker.prototype.modifyData = function(data) {
+SlideShow.prototype.modifyData = function(data) {
   data.hide();
 };
 
-CarouselMaker.prototype.startSlideShow = function() {
+SlideShow.prototype.startSlideShow = function() {
   this.showSlide(0);
 }
 
-CarouselMaker.prototype.showSlide = function(slideCount) {
+SlideShow.prototype.showSlide = function(slideCount) {
   var slideIndex = slideCount % this.slidesCount,
     _this = this;
   this.startSlidesAnimation(slideIndex);
   setTimeout(function() { _this.showSlide(slideIndex + 1); }, 1000);
 };
 
-CarouselMaker.prototype.startSlidesAnimation = function(currentSlideIndex) {
+SlideShow.prototype.startSlidesAnimation = function(currentSlideIndex) {
   var _this = this,
     previousSlideIndex = this.getPreviousSlideIndex(currentSlideIndex);
   $(this.slides[previousSlideIndex]).fadeOut(100, function() {
@@ -57,15 +57,15 @@ CarouselMaker.prototype.startSlidesAnimation = function(currentSlideIndex) {
   });
 };
 
-CarouselMaker.prototype.getPreviousSlideIndex = function(currentSlideIndex) {
+SlideShow.prototype.getPreviousSlideIndex = function(currentSlideIndex) {
   return (currentSlideIndex == 0 ? this.slidesCount - 1 : currentSlideIndex - 1);
 };
 
-CarouselMaker.prototype.setImageCounter = function(currentImage) {
+SlideShow.prototype.setImageCounter = function(currentImage) {
   this.imageCounter.html(currentImage + '/' + this.slidesCount);
 };
 
 $(function() {
-  var slideShow = new CarouselMaker($('[data-property="slideshow"]'), 'img');
+  var slideShow = new SlideShow($('[data-property="slideshow"]'), 'img');
   slideShow.init();
 });
