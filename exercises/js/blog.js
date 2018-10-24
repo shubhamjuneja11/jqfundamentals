@@ -8,27 +8,35 @@ BlogToggler.prototype.init = function() {
 
 BlogToggler.prototype.setToggler = function() {
   var _this = this;
-  this.blog.on('click', function(event) {
+  this.blog.click(function(event) {
     event.preventDefault();
     var clickedList = $(event.target);
-    var selectedList = clickedList.closest('li').find('.excerpt');
-    // Open clicked paragraph
-    selectedList.slideToggle();
-    if (_this.selectedList && !_this.compareList(selectedList, _this.selectedList)) {
-      // Close previous paragraph
-      _this.selectedList.slideUp();
-    }
-    // Set clicked as current paragraph
-    _this.selectedList = selectedList;
+    _this.toggleList(clickedList);
   });
 };
 
-BlogToggler.prototype.compareList = function(list1, list2){
-  return (this.getListName(list1) === this.getListName(list2));
+BlogToggler.prototype.toggleList = function(clickedList) {
+  var selectedList = clickedList.closest('li').find('.excerpt');
+  // Open clicked paragraph
+  selectedList.slideToggle();
+  this.closePreviousList(selectedList);
+  // Set clicked as current paragraph
+  this.selectedList = selectedList;
 };
 
-BlogToggler.prototype.getListName = function(list) {
-  return list.siblings('h3').find('a').html();
+BlogToggler.prototype.closePreviousList = function(selectedList) {
+  if (this.selectedList && !this.compareList(selectedList, this.selectedList)) {
+    // Close previous paragraph
+    this.selectedList.slideUp();
+  }
+};
+
+BlogToggler.prototype.compareList = function(list1, list2) {
+  return (this.getListDataBlog(list1) === this.getListDataBlog(list2));
+};
+
+BlogToggler.prototype.getListDataBlog = function(list) {
+  return list.closest('li').attr('data-blog');
 };
 
 $(function() {
