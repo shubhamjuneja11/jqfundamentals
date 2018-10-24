@@ -1,5 +1,5 @@
-function DropDownMenuHandler(menuDiv) {
-  this.menu = $(menuDiv);
+function DropDownMenuHandler(options) {
+  this.menu = options.menuDiv;
 }
 
 DropDownMenuHandler.prototype.init = function() {
@@ -8,20 +8,17 @@ DropDownMenuHandler.prototype.init = function() {
 
 DropDownMenuHandler.prototype.setMenuHover = function() {
   var _this = this;
-  this.menu.find('li').hover(function(event) {
-      var hoveredMenu = $(event.target);
-      // Change color of hovered item
-      hoveredMenu.addClass('hover');
-      // Open submenu
-      _this.toggleDropDown(hoveredMenu);
-    },
-    function(event) {
-      var hoveredMenu = $(event.target);
-      hoveredMenu.removeClass('hover');
-      // Close submenu
-      _this.toggleDropDown(hoveredMenu);
-    }
-  );
+  this.menu.find('li').on('mouseenter mouseleave', function(event) {
+    // Toggle menu
+    _this.toggleMenu($(this));
+  });
+};
+
+DropDownMenuHandler.prototype.toggleMenu = function(hoveredMenu) {
+  // Change color of hovered item
+  hoveredMenu.toggleClass('hover');
+  // Open submenu
+  this.toggleDropDown(hoveredMenu);
 };
 
 DropDownMenuHandler.prototype.toggleDropDown = function(menuItem) {
@@ -29,6 +26,9 @@ DropDownMenuHandler.prototype.toggleDropDown = function(menuItem) {
 };
 
 $(function() {
-  var dropDownMenu = new DropDownMenuHandler('#nav');
+  var options = {
+    menuDiv: $('[data-property="nav"]')
+  };
+  var dropDownMenu = new DropDownMenuHandler(options);
   dropDownMenu.init()
 });
