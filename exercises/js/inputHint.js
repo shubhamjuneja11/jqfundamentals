@@ -5,8 +5,8 @@ function HintProvider(searchField, searchLabel) {
 
 HintProvider.prototype.init = function() {
   this.searchLabelText = this.searchLabel.text();
-  this.searchField.val(this.searchLabel.text());
-  this.searchField.addClass('hint');
+  this.searchField.val(this.searchLabel.text())
+                  .addClass('hint');
   this.searchLabel.remove();
   this.setTextFocusListener();
 
@@ -14,24 +14,22 @@ HintProvider.prototype.init = function() {
 
 HintProvider.prototype.setTextFocusListener = function() {
   var _this = this;
-  this.searchField.on({
-    focus: function() {
-      $(this).val('').removeClass('hint');
-    }
+  this.searchField.focus(function() {
+    $(this).val('').removeClass('hint');
   });
-  this.searchField.on({
-    blur: function() {
+
+  this.searchField.blur(function() {
       $this = $(this);
-      if ($this.val() === ('')) {
+      if ($this.val() === '') {
         $this.val(_this.searchLabelText).addClass('hint');
       }
     }
-  });
+  );
 };
 
 $(function() {
-  var searchField = $('[data-property="hint"]');
-  var searchLabel = $('#search label[for="q"]');
-  var hintProvider = new HintProvider(searchField, searchLabel);
+  var searchField = $('[data-property="hint"]'),
+    searchLabel = $('[data-property="search"]'),
+    hintProvider = new HintProvider(searchField, searchLabel);
   hintProvider.init();
 });
