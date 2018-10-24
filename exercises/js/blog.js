@@ -8,7 +8,7 @@ BlogToggler.prototype.init = function() {
 
 BlogToggler.prototype.setToggler = function() {
   var _this = this;
-  this.blog.on('click', function(event) {
+  this.blog.click(function(event) {
     event.preventDefault();
     var clickedList = $(event.target);
     _this.toggleList(clickedList);
@@ -16,15 +16,15 @@ BlogToggler.prototype.setToggler = function() {
 };
 
 BlogToggler.prototype.toggleList = function(clickedList) {
-  selectedList = clickedList.closest('li').find('.excerpt');
+  var selectedList = clickedList.closest('li').find('.excerpt');
   // Open clicked paragraph
   selectedList.slideToggle();
-  this.closePreviousList();
+  this.closePreviousList(selectedList);
   // Set clicked as current paragraph
   this.selectedList = selectedList;
 };
 
-BlogToggler.prototype.closePreviousList = function() {
+BlogToggler.prototype.closePreviousList = function(selectedList) {
   if (this.selectedList && !this.compareList(selectedList, this.selectedList)) {
     // Close previous paragraph
     this.selectedList.slideUp();
