@@ -1,54 +1,71 @@
-function SlideShowCreator(slidesDiv, slidesContentType) {
-  this.slidesDiv = $(slidesDiv);
-  this.slidesContentType = slidesContentType;
+function CarouselMaker(slidesContainer, slidesContent) {
+  this.slidesContainer = slidesContainer;
+  this.slidesContent = slidesContent;
 };
 
-SlideShowCreator.prototype.init = function() {
-  this.slidesContent = this.slidesDiv.find(this.slidesContentType);
+CarouselMaker.prototype.init = function() {
+  this.slidesContent = this.slidesContainer.find(this.slidesContent);
   this.slidesCount = this.slidesContent.length;
   this.createSlider();
   this.startSlideShow();
 };
 
-SlideShowCreator.prototype.createSlider = function() {
-  var images = this.slidesDiv.find(this.slidesContentType),
-    slider = $('<div id=slider>'),
-    firstImage = true;
-  images.each(function(index, oldimage) {
-    var image = $(oldimage).clone();
-    if (!firstImage)
-      image.hide();
-    else
-      firstImage = false;
-    slider.append(image);
-  });
-  this.slides = slider.find('img');
-  this.imageCounter = $('<div>');
-  slider.append(this.imageCounter);
-  $('body').prepend(slider);
+CarouselMaker.prototype.createSlider = function() {
+  var images = this.slidesContainer.find(this.slidesContent);
+  this.slider = $('<div id=slider>');
+  this.appendClonedData(images);
+  this.slides = this.slider.find('img');
+  this.createImageCounter();
+  $('body').prepend(this.slider);
 };
 
-SlideShowCreator.prototype.startSlideShow = function() {
+CarouselMaker.prototype.createImageCounter = function() {
+  this.imageCounter = $('<div>');
+  this.slider.append(this.imageCounter);
+};
+
+CarouselMaker.prototype.appendClonedData = function(data) {
+  var _this = this;
+  data.each(function(index, oldData) {
+    var clonedData = $(oldData).clone();
+    _this.modifyData(clonedData);
+    _this.slider.append(clonedData);
+  });
+};
+
+CarouselMaker.prototype.modifyData = function(data) {
+  data.hide();
+};
+
+CarouselMaker.prototype.startSlideShow = function() {
   this.showSlide(0);
 }
 
-SlideShowCreator.prototype.showSlide = function(slideCount) {
+CarouselMaker.prototype.showSlide = function(slideCount) {
   var slideIndex = slideCount % this.slidesCount,
-    slideOutIndex = slideIndex == 0 ? this.slidesCount - 1 : slideIndex - 1,
-    slides = this.slides,
     _this = this;
-  $(slides[slideOutIndex]).fadeOut(100, function() {
-    $(slides[slideIndex]).fadeIn(100);
-    _this.setImageCounter(slideIndex+1);
-  });
+  this.startSlidesAnimation(slideIndex);
   setTimeout(function() { _this.showSlide(slideIndex + 1); }, 1000);
 };
 
-SlideShowCreator.prototype.setImageCounter = function(currentImage) {
+CarouselMaker.prototype.startSlidesAnimation = function(currentSlideIndex) {
+  var _this = this,
+    previousSlideIndex = this.getPreviousSlideIndex(currentSlideIndex);
+  $(this.slides[previousSlideIndex]).fadeOut(100, function() {
+    $(_this.slides[currentSlideIndex]).fadeIn(100);
+    _this.setImageCounter(currentSlideIndex + 1);
+  });
+};
+
+CarouselMaker.prototype.getPreviousSlideIndex = function(currentSlideIndex) {
+  return (currentSlideIndex == 0 ? this.slidesCount - 1 : currentSlideIndex - 1);
+};
+
+CarouselMaker.prototype.setImageCounter = function(currentImage) {
   this.imageCounter.html(currentImage + '/' + this.slidesCount);
 };
 
 $(function() {
-  var slideShow = new SlideShowCreator('#slideshow', 'img');
+  var slideShow = new CarouselMaker($('[data-property="slideshow"]'), 'img');
   slideShow.init();
 });
