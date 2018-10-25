@@ -1,5 +1,7 @@
 function BlogContentLoader(blogDataOptions) {
   this.blogData = blogDataOptions.blogData;
+  this.dataUrl = blogDataOptions.dataUrl;
+  this.dataBlogProperty = blogDataOptions.dataBlogProperty;
 };
 
 BlogContentLoader.prototype.init = function() {
@@ -9,7 +11,6 @@ BlogContentLoader.prototype.init = function() {
 };
 
 BlogContentLoader.prototype.createContentHolders = function() {
-  console.log('111');
   var _this = this;
   this.blogListTitles.each(function(index, value) {
     var listItem = $(value),
@@ -21,31 +22,22 @@ BlogContentLoader.prototype.createContentHolders = function() {
 
 BlogContentLoader.prototype.setBlogListener = function() {
   var _this = this;
-  this.blogData.on('click','h3',function(event) {
+  this.blogData.on('click', 'h3', function(event) {
     event.preventDefault();
-    _this.loadContent();
+    var $this = $(this);
+    _this.loadContent($this.data('content'), $this.attr(_this.dataBlogProperty));
   });
 };
 
-BlogContentLoader.prototype.loadContent = function() {
-  console.log('111111');
-  $.ajax({
-    url:'data/blog.html'
-  })
-  .done(function(response) {
-    console.log('2222');
-  })
-  .fail(function(error) {
-    console.log('33333');
-  });
-  $('div [data-blog]').load('data/blog.html',function(response){
-    console.log(response);
-  });
+BlogContentLoader.prototype.loadContent = function(contentHolder, blogId) {
+  contentHolder.load(this.dataUrl + ' [' + this.dataBlogProperty + '=' + blogId + ']');
 };
 
 $(function() {
   var blogDataOptions = {
-    blogData: $('[data-property="blog"]')
+    blogData: $('[data-property="blog"]'),
+    dataUrl: 'data/blog.html',
+    dataBlogProperty: 'data-blog'
   }
   var blogContentLoader = new BlogContentLoader(blogDataOptions);
   blogContentLoader.init();
