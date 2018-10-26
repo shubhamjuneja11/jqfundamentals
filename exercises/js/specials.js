@@ -1,7 +1,7 @@
 function SpecialDay(specialDayOptions) {
   this.specialDayContent = specialDayOptions.specialDayContent;
   this.requestUrl = specialDayOptions.requestUrl;
-  this.submitButton = specialDayOptions.submitButton;
+  this.submitButton = specialDayOptions.submitButtonSelector;
   this.optionsSelector = specialDayOptions.optionsSelector;
 };
 
@@ -25,8 +25,7 @@ SpecialDay.prototype.dayChangedHandler = function() {
 SpecialDay.prototype.loadSpecialDayData = function() {
   if (!this.specialDaysData) {
     this.specialDaysData = this.sendAjaxRequest();
-  }
-  else {
+  } else {
     this.setSpecialDayData();
   }
 };
@@ -36,7 +35,7 @@ SpecialDay.prototype.sendAjaxRequest = function() {
   $.ajax({
     url: _this.requestUrl,
     dataType: "json"
-  }).done(function(json){
+  }).done(function(json) {
     _this.setData(json);
   });
 };
@@ -47,7 +46,7 @@ SpecialDay.prototype.setData = function(json) {
 };
 
 SpecialDay.prototype.getSelectedDayData = function() {
-  return(this.specialDaysData[this.selectedDay]);
+  return (this.specialDaysData[this.selectedDay]);
 };
 
 SpecialDay.prototype.setSpecialDayData = function() {
@@ -55,7 +54,6 @@ SpecialDay.prototype.setSpecialDayData = function() {
 };
 
 SpecialDay.prototype.removeSubmitbutton = function() {
-  console.log('dddd');
   this.specialDayContent.find(this.submitButton).remove();
 };
 
@@ -63,7 +61,7 @@ $(function() {
   var specialDayOptions = {
     specialDayContent: $('#specials'),
     requestUrl: 'data/specials.json',
-    submitButton: '.buttons',
+    submitButtonSelector: '.buttons',
     optionsSelector: 'form select[name="day"]'
   };
   var specialDay = new SpecialDay(specialDayOptions);
