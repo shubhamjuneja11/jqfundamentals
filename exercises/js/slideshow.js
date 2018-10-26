@@ -1,19 +1,17 @@
-function SlideShow(slidesContainer, slidesContent) {
-  this.slidesContainer = slidesContainer;
-  this.slidesContent = slidesContent;
+function SlideShow(slideShowOptions) {
+  this.imagesContainer = slideShowOptions.imagesContainer;
 };
 
 SlideShow.prototype.init = function() {
-  this.slidesContent = this.slidesContainer.find(this.slidesContent);
-  this.slidesCount = this.slidesContent.length;
+  this.images = this.imagesContainer.find('img');
+  this.slidesCount = this.images.length;
   this.createSlider();
   this.startSlideShow();
 };
 
 SlideShow.prototype.createSlider = function() {
-  var images = this.slidesContainer.find(this.slidesContent);
   this.slider = $('<div id=slider>');
-  this.appendClonedData(images);
+  this.appendClonedImages(this.images);
   this.slides = this.slider.find('img');
   this.createImageCounter();
   $('body').prepend(this.slider);
@@ -24,17 +22,17 @@ SlideShow.prototype.createImageCounter = function() {
   this.slider.append(this.imageCounter);
 };
 
-SlideShow.prototype.appendClonedData = function(data) {
+SlideShow.prototype.appendClonedImages = function() {
   var _this = this;
-  data.each(function(index, oldData) {
-    var clonedData = $(oldData).clone();
-    _this.modifyData(clonedData);
-    _this.slider.append(clonedData);
+  this.images.each(function(index, image) {
+    var clonedImage = $(image).clone();
+    _this.modifyImage(clonedImage);
+    _this.slider.append(clonedImage);
   });
 };
 
-SlideShow.prototype.modifyData = function(data) {
-  data.hide();
+SlideShow.prototype.modifyImage = function(image) {
+  image.hide();
 };
 
 SlideShow.prototype.startSlideShow = function() {
@@ -45,14 +43,15 @@ SlideShow.prototype.showSlide = function(slideCount) {
   var slideIndex = slideCount % this.slidesCount,
     _this = this;
   this.startSlidesAnimation(slideIndex);
-  setTimeout(function() { _this.showSlide(slideIndex + 1); }, 1000);
 };
 
 SlideShow.prototype.startSlidesAnimation = function(currentSlideIndex) {
   var _this = this,
     previousSlideIndex = this.getPreviousSlideIndex(currentSlideIndex);
-  $(this.slides[previousSlideIndex]).fadeOut(100, function() {
-    $(_this.slides[currentSlideIndex]).fadeIn(100);
+  $(this.slides[previousSlideIndex]).fadeOut(1000, function() {
+    $(_this.slides[currentSlideIndex]).fadeIn(1000, function() {
+      _this.showSlide(currentSlideIndex + 1);
+    });
     _this.setImageCounter(currentSlideIndex + 1);
   });
 };
@@ -62,10 +61,13 @@ SlideShow.prototype.getPreviousSlideIndex = function(currentSlideIndex) {
 };
 
 SlideShow.prototype.setImageCounter = function(currentImage) {
-  this.imageCounter.html(currentImage + '/' + this.slidesCount);
+  this.imageCounter.text(currentImage + '/' + this.slidesCount);
 };
 
 $(function() {
-  var slideShow = new SlideShow($('[data-property="slideshow"]'), 'img');
+  var slideShowOptions = {
+    imagesContainer: $('[data-property="slideshow"]'),
+  };
+  var slideShow = new SlideShow(slideShowOptions);
   slideShow.init();
 });
