@@ -50,7 +50,11 @@ SpecialDay.prototype.getSelectedDayData = function() {
 };
 
 SpecialDay.prototype.setSpecialDayData = function() {
-  this.daysContentHolder.text(this.getSelectedDayData()['title']);
+  if (this.selectedDay) {
+    this.daysContentHolder.text(this.getSelectedDayData()['title']);
+  } else {
+    this.daysContentHolder.text('');
+  }
 };
 
 SpecialDay.prototype.removeSubmitbutton = function() {
