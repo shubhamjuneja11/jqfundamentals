@@ -55,6 +55,7 @@ SpecialDay.prototype.setSpecialDayData = function() {
 };
 
 SpecialDay.prototype.removeSubmitbutton = function() {
+  console.log('dddd');
   this.specialDayContent.find(this.submitButton).remove();
 };
 
@@ -62,7 +63,7 @@ $(function() {
   var specialDayOptions = {
     specialDayContent: $('#specials'),
     requestUrl: 'data/specials.json',
-    submitButton: '.buttonns',
+    submitButton: '.buttons',
     optionsSelector: 'form select[name="day"]'
   };
   var specialDay = new SpecialDay(specialDayOptions);
