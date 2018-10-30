@@ -23,8 +23,9 @@ SpecialDay.prototype.dayChangedHandler = function() {
 };
 
 SpecialDay.prototype.loadSpecialDayData = function() {
+  debugger;
   if (!this.specialDaysData) {
-    this.specialDaysData = this.sendAjaxRequest();
+    this.sendAjaxRequest();
   } else {
     this.setSpecialDayData();
   }
