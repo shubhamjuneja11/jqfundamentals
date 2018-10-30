@@ -6,29 +6,20 @@ function SpecialDay(specialDayOptions) {
 };
 
 SpecialDay.prototype.init = function() {
-  this.daysSelector = this.specialDayContent.find(this.optionsSelector);
-  this.daysOptions = this.daysSelector.find('option');
-  this.daysContentHolder = $('<div>');
-  this.daysSelector.after(this.daysContentHolder);
-  this.dayChangedHandler();
   this.removeSubmitbutton();
+  this.$daysOptions = this.specialDayContent.find(this.optionsSelector);
+  this.$daysContentHolder = $('<div>');
+  this.$daysOptions.after(this.$daysContentHolder);
+  this.dayChangedHandler();
+  this.sendAjaxRequest();
 };
 
 SpecialDay.prototype.dayChangedHandler = function() {
   var _this = this;
-  this.daysSelector.change(function() {
+  this.$daysOptions.change(function() {
     _this.selectedDay = $(this).val();
-    _this.loadSpecialDayData();
+    _this.setSpecialDayData();
   });
-};
-
-SpecialDay.prototype.loadSpecialDayData = function() {
-  debugger;
-  if (!this.specialDaysData) {
-    this.sendAjaxRequest();
-  } else {
-    this.setSpecialDayData();
-  }
 };
 
 SpecialDay.prototype.sendAjaxRequest = function() {
@@ -43,7 +34,6 @@ SpecialDay.prototype.sendAjaxRequest = function() {
 
 SpecialDay.prototype.setData = function(json) {
   this.specialDaysData = json;
-  this.setSpecialDayData();
 };
 
 SpecialDay.prototype.getSelectedDayData = function() {
@@ -52,9 +42,9 @@ SpecialDay.prototype.getSelectedDayData = function() {
 
 SpecialDay.prototype.setSpecialDayData = function() {
   if (this.selectedDay) {
-    this.daysContentHolder.text(this.getSelectedDayData()['title']);
+    this.$daysContentHolder.text(this.getSelectedDayData()['title']);
   } else {
-    this.daysContentHolder.text('');
+    this.$daysContentHolder.text('');
   }
 };
 
@@ -64,10 +54,10 @@ SpecialDay.prototype.removeSubmitbutton = function() {
 
 $(function() {
   var specialDayOptions = {
-    specialDayContent: $('#specials'),
+    specialDayContent: $('[data-property=specials]'),
     requestUrl: 'data/specials.json',
-    submitButtonSelector: '.buttons',
-    optionsSelector: 'form select[name="day"]'
+    submitButtonSelector: '[data-property=buttons]',
+    optionsSelector: 'form select[data-property="day"]'
   };
   var specialDay = new SpecialDay(specialDayOptions);
   specialDay.init();
