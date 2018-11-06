@@ -10,7 +10,7 @@ SlideShow.prototype.init = function() {
 };
 
 SlideShow.prototype.initializeData = function() {
-  this.images = this.imagesContainer.find('img')
+  this.images = this.imagesContainer.find('img');
   this.slidesCount = this.images.length;
 };
 
